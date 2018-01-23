@@ -1,12 +1,13 @@
 import counter from './counter';
+import { increment, decrement } from '../actions/actions';
 
 describe('Counter reducer', () => {
   it('should increment', () => {
-    expect(counter(0, { type: 'INCREMENT' })).toEqual(1);
+    expect(counter(0, increment())).toEqual(1);
   });
 
   it('should decrement', () => {
-    expect(counter(1, { type: 'DECREMENT' })).toEqual(0);
+    expect(counter(1, decrement())).toEqual(0);
   });
 
   it('should return the current state when action is unknown', () => {
