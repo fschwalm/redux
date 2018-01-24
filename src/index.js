@@ -10,11 +10,24 @@ let nextTodoId = 0;
 
 const getNextID = () => nextTodoId++;
 
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_COMPLETED':
+      return todos.filter(t => t.completed);
+    case 'SHOW_ACTIVE':
+      return todos.filter(t => !t.completed);
+    default:
+      return todos;
+  }
+};
+
 const render = () => {
-  reactDom.render(<TodoApp todos={store} />, document.getElementById('root'));
+  reactDom.render(<TodoApp {...store.getState()} />, document.getElementById('root'));
 };
 
 store.subscribe(render);
 render();
 
-export { getNextID, store };
+export { store, getNextID, getVisibleTodos };

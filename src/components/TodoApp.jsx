@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { getNextID, store } from '..';
+import { getNextID, getVisibleTodos, store } from '..';
+import FilterLink from './FilterLink';
 
 class TodoApp extends Component {
   render() {
+    const { todos, visibilityFilter } = this.props;
+
+    const visibleTodos = getVisibleTodos(todos, visibilityFilter);
     return (
       <div>
         <input
@@ -23,7 +27,7 @@ class TodoApp extends Component {
           Add Todo
         </button>
         <ul>
-          {store.getState().todos.map(todo => (
+          {visibleTodos.map(todo => (
             <li
               key={todo.id}
               onClick={() => store.dispatch({ type: 'TOGGLE_TODO', id: todo.id })}
@@ -33,6 +37,20 @@ class TodoApp extends Component {
             </li>
           ))}
         </ul>
+        <p>
+          Show:{' '}
+          <FilterLink filter="SHOW_ALL" currentFilter={visibilityFilter}>
+            All
+          </FilterLink>
+          {', '}
+          <FilterLink filter="SHOW_ACTIVE" currentFilter={visibilityFilter}>
+            Active
+          </FilterLink>
+          {', '}
+          <FilterLink filter="SHOW_COMPLETED" currentFilter={visibilityFilter}>
+            completed
+          </FilterLink>
+        </p>
       </div>
     );
   }
