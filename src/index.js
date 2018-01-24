@@ -1,48 +1,20 @@
 import React from 'react';
+import reactDom from 'react-dom';
 import { createStore } from 'redux';
 import './index.css';
 import todoApp from './reducers/todoApp';
+import TodoApp from './components/TodoApp';
 
 const store = createStore(todoApp);
+let nextTodoId = 0;
 
-console.log('Initial state:');
-console.log(store.getState());
-console.log('--------------');
+const getNextID = () => nextTodoId++;
 
-console.log('Dispatching ADD_TODO.');
-store.dispatch({
-  type: 'ADD_TODO',
-  id: 0,
-  text: 'Learn Redux',
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
+const render = () => {
+  reactDom.render(<TodoApp todos={store} />, document.getElementById('root'));
+};
 
-console.log('Dispatching ADD_TODO.');
-store.dispatch({
-  type: 'ADD_TODO',
-  id: 1,
-  text: 'Go shopping',
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
+store.subscribe(render);
+render();
 
-console.log('Dispatching TOGGLE_TODO.');
-store.dispatch({
-  type: 'TOGGLE_TODO',
-  id: 0,
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
-
-console.log('Dispatching SET_VISIBILITY_FILTER.');
-store.dispatch({
-  type: 'SET_VISIBILITY_FILTER',
-  filter: 'SHOW_COMPLETED',
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
+export { getNextID, store };
