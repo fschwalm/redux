@@ -1,10 +1,10 @@
 import React from 'react';
-import { getNextID, getVisibleTodos, store } from '..';
-import TodoList from './TodoList';
+import { getNextID, store } from '..';
 import Footer from './Footer';
 import AddTodo from './AddTodo';
+import VisibleTodoList from './VisibleTodoList';
 
-const TodoApp = ({ todos, visibilityFilter }) => (
+const TodoApp = () => (
   <div>
     <AddTodo
       onAddClick={text =>
@@ -15,15 +15,7 @@ const TodoApp = ({ todos, visibilityFilter }) => (
         })
       }
     />
-    <TodoList
-      todos={getVisibleTodos(todos, visibilityFilter)}
-      onTodoClick={(id) => {
-        store.dispatch({
-          type: 'TOGGLE_TODO',
-          id,
-        });
-      }}
-    />
+    <VisibleTodoList />
     <Footer />
   </div>
 );
