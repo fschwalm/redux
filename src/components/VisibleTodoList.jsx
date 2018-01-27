@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import TodoList from './TodoList';
-import { store, getVisibleTodos } from '..';
 
-class VisibleTodoList extends Component {
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => this.forceUpdate());
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_COMPLETED':
+      return todos.filter(t => t.completed);
+    case 'SHOW_ACTIVE':
+      return todos.filter(t => !t.completed);
+    default:
+      throw new Error(`Unknown filter: ${filter}.`);
   }
+};
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+const mapStateToProps = state => ({
+  todos: getVisibleTodos(state.todos, state.visibilityFilter),
+});
 
-  render() {
-    const { todos, visibilityFilter } = store.getState();
+const mapDispatchToProps = dispatch => ({
+  onTodoClick(id) {
+    dispatch({
+      type: 'TOGGLE_TODO',
+      id,
+    });
+  },
+});
 
-    return (
-      <TodoList
-        todos={getVisibleTodos(todos, visibilityFilter)}
-        onTodoClick={id =>
-          store.dispatch({
-            type: 'TOGGLE_TODO',
-            id,
-          })
-        }
-      />
-    );
-  }
-}
+const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
 
 export default VisibleTodoList;

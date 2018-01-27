@@ -1,34 +1,17 @@
-import React from 'react';
+import { connect } from 'react-redux';
 import Link from './Link';
-import { store } from '..';
 
-class FilterLink extends React.Component {
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => this.forceUpdate());
-  }
+const mapStateToProps = (state, ownProps) => ({
+  active: ownProps.filter === state.visibilityFilter,
+});
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onClick: () => {
+    dispatch({
+      type: 'SET_VISIBILITY_FILTER',
+      filter: ownProps.filter,
+    });
+  },
+});
 
-  render() {
-    const { filter, children } = this.props;
-    const { visibilityFilter } = store.getState();
-
-    return (
-      <Link
-        active={filter === visibilityFilter}
-        onClick={() =>
-          store.dispatch({
-            type: 'SET_VISIBILITY_FILTER',
-            filter,
-          })
-        }
-      >
-        {children}
-      </Link>
-    );
-  }
-}
-
-export default FilterLink;
+export default connect(mapStateToProps, mapDispatchToProps)(Link);
