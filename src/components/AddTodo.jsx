@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getNextID } from '..';
+import { addTodo } from '../actions';
 
 const AddTodo = ({ dispatch }) => {
   let input;
@@ -14,11 +14,7 @@ const AddTodo = ({ dispatch }) => {
       />
       <button
         onClick={() => {
-          dispatch({
-            type: 'ADD_TODO',
-            id: getNextID(),
-            text: input.value,
-          });
+          dispatch(addTodo(input.value));
           input.value = '';
         }}
       >
