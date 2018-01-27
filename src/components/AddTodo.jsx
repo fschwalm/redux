@@ -1,6 +1,7 @@
 import React from 'react';
+import { getNextID, store } from '..';
 
-const AddTodo = ({ onAddClick }) => {
+const AddTodo = () => {
   let input;
 
   return (
@@ -12,7 +13,11 @@ const AddTodo = ({ onAddClick }) => {
       />
       <button
         onClick={() => {
-          onAddClick(input.value);
+          store.dispatch({
+            type: 'ADD_TODO',
+            id: getNextID(),
+            text: input.value,
+          });
           input.value = '';
         }}
       >

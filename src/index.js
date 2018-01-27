@@ -23,11 +23,6 @@ const getVisibleTodos = (todos, filter) => {
   }
 };
 
-const render = () => {
-  reactDom.render(<TodoApp {...store.getState()} />, document.getElementById('root'));
-};
-
-store.subscribe(render);
-render();
+reactDom.render(<TodoApp />, document.getElementById('root'));
 
 export { store, getNextID, getVisibleTodos };
