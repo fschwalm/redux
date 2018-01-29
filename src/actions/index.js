@@ -1,12 +1,12 @@
+import uuidv4 from 'uuid/v4';
+
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
-let nextTodoId = 0;
-
 const addTodo = text => ({
   type: ADD_TODO,
-  id: (nextTodoId++).toString(),
+  id: uuidv4(),
   text,
 });
 
