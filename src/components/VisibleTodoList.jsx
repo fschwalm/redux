@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TodoList from './TodoList';
 import * as actions from '../actions';
-import { getVisibleTodos } from '../reducers';
+import { getVisibleTodos, getIsFetching } from '../reducers';
 import { fetchTodos } from '../api';
 
 class VisibleTodoList extends React.Component {
@@ -18,14 +18,20 @@ class VisibleTodoList extends React.Component {
   }
 
   fetchData() {
-    const { filter, receiveTodos } = this.props;
+    const { filter, receiveTodos, requestTodos } = this.props;
+    requestTodos(filter)
     fetchTodos(filter).then(todos => receiveTodos(filter, todos));
   }
 
   render() {
-    const { toggleTodo, ...rest } = this.props;
+    const { isFetching, toggleTodo, todos } = this.props;
+    console.log(isFetching);
 
-    return <TodoList {...rest} onTodoClick={toggleTodo} />;
+    if (isFetching && !todos.length) {
+      return (<p>Loading...</p>);
+    }
+
+    return <TodoList todos={todos} onTodoClick={toggleTodo} />;
   }
 }
 
@@ -33,6 +39,7 @@ const mapStateToProps = (state, ownProps) => {
   const filter = ownProps.match.params.filter || 'all';
   return {
     todos: getVisibleTodos(state, filter),
+    isFetching: getIsFetching(state, filter),
     filter,
   };
 };
@@ -43,9 +50,6 @@ const mapStateToProps = (state, ownProps) => {
 //   },
 // });
 
-VisibleTodoList = withRouter(connect(
-  mapStateToProps,
-  actions,
-)(VisibleTodoList));
+VisibleTodoList = withRouter(connect(mapStateToProps, actions)(VisibleTodoList));
 
 export default VisibleTodoList;
