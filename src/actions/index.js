@@ -2,6 +2,13 @@ import uuidv4 from 'uuid/v4';
 
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
+const RECEIVE_TODOS = 'RECEIVE_TODOS';
+
+const receiveTodos = (filter, response) => ({
+  type: RECEIVE_TODOS,
+  filter,
+  response,
+});
 
 const addTodo = text => ({
   type: ADD_TODO,
@@ -14,4 +21,4 @@ const toggleTodo = id => ({
   id,
 });
 
-export { addTodo, toggleTodo };
+export { addTodo, toggleTodo, receiveTodos };
