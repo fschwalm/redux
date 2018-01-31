@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import TodoList from './TodoList';
 import * as actions from '../actions';
 import { getVisibleTodos, getIsFetching } from '../reducers';
-import { fetchTodos } from '../api';
 
 class VisibleTodoList extends React.Component {
   componentDidMount() {
@@ -18,14 +17,13 @@ class VisibleTodoList extends React.Component {
   }
 
   fetchData() {
-    const { filter, receiveTodos, requestTodos } = this.props;
-    requestTodos(filter)
-    fetchTodos(filter).then(todos => receiveTodos(filter, todos));
+    const { filter, fetchTodos, requestTodos } = this.props;
+    requestTodos(filter);
+    fetchTodos(filter);
   }
 
   render() {
     const { isFetching, toggleTodo, todos } = this.props;
-    console.log(isFetching);
 
     if (isFetching && !todos.length) {
       return (<p>Loading...</p>);
